@@ -18,7 +18,7 @@ class TasksState(rx.State):
                 for task in [
                     Task(text='Walk the dog', state='open'),
                     Task(text='Write Code', state='in_progress'),
-                    Task(text='Get up!', state='closed'),
+                    Task(text='Get up!', state='done'),
                 ]:
                     session.add(task)
                     session.commit()
