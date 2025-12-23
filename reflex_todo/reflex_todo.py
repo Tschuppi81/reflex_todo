@@ -5,6 +5,11 @@ import reflex as rx
 from reflex_todo.states.task import TasksState
 
 
+charcoal = "#36454F"
+charcoal_hover = "#2b3a40"
+light_gray = '#d3d3d3'
+
+
 @rx.page(route='/add-task', title='Add Task')
 def add() -> rx.Component:
 
@@ -150,10 +155,12 @@ def render_task(task):
             rx.text(
                 task_label,
                 size='5',
+                _hover={'font_size': '140%'},
                 font_weight='semibold',
                 no_of_lines=2,
                 color='gray.800',
                 margin='10px',
+                width='70%',
             ),
             actions,
             rx.badge(
@@ -163,33 +170,36 @@ def render_task(task):
                 border_radius='full',
                 margin_right='5px',
                 font_size='xs',
+                width='13%',
             ),
-            justify='between',
             align='center',
             width='100%',
         ),
         padding='3px',
-        bg='gray.50',                # contrast with page background
         border='1px solid',
-        border_color='gray.200',
-        border_radius='lg',
-        box_shadow='sm',
+        border_color='gray',
+        border_radius='8px',
         width='100%',
         min_height='56px',           # prevents collapsed/zero-height rows
         transition='all 0.12s ease',
         cursor='pointer',
-        _hover={'transform': 'translateY(-4px)', 'boxShadow': 'md'},
+        _hover={
+            'transform': 'translateY(-4px)',
+            'boxShadow': 'md',
+            'color': charcoal_hover,
+        },
     )
 
 
 @rx.page(route='/', title='My Tasks', on_load=TasksState.load_tasks)
 def tasks() -> rx.Component:
+
     return rx.container(
         rx.color_mode.button(position="top-right"),
         rx.vstack(
-            rx.heading('This is my basic task reflex app', size='9'),
-            rx.text('Manage your tasks here', size='4'),
-            justify='center',
+            rx.heading('This is my basic task app', size='9'),
+            width='100%',
+            margin_bottom='30px',
         ),
 
         # menu options to manage the tasks
@@ -204,6 +214,7 @@ def tasks() -> rx.Component:
             ),
             spacing="4",
             align='start',
+            margin_y='10px',
         ),
 
         # list tasks
