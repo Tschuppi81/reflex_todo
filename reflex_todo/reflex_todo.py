@@ -182,7 +182,7 @@ def render_task(task):
     )
 
 
-@rx.page(route='/', title='My Tasks')
+@rx.page(route='/', title='My Tasks', on_load=TasksState.load_tasks)
 def tasks() -> rx.Component:
     return rx.container(
         rx.color_mode.button(position="top-right"),
@@ -231,7 +231,6 @@ def tasks() -> rx.Component:
             spacing='3',
             justify='center',
         ),
-        on_mount=TasksState.load_tasks,
     )
 
 
