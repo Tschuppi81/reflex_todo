@@ -197,7 +197,7 @@ def tasks() -> rx.Component:
     return rx.container(
         rx.color_mode.button(position="top-right"),
         rx.vstack(
-            rx.heading('This is my basic task app', size='9'),
+            rx.heading('Task Dashboard', size='9'),
             width='100%',
             margin_bottom='30px',
         ),
@@ -216,13 +216,18 @@ def tasks() -> rx.Component:
             align='start',
             margin_y='10px',
         ),
+        rx.divider(
+            max_width='600px',
+            margin_top='1.0em',
+            margin_bottom='.4em',
+        ),
 
         # list tasks
         rx.vstack(
             rx.vstack(
                 margin_top='6',
             ),
-            rx.heading('Your Tasks', size='7'),
+            # rx.heading('My Tasks', size='7'),
             rx.vstack(
                 rx.cond(
                     TasksState.tasks,
