@@ -47,24 +47,51 @@ def add() -> rx.Component:
 
 @rx.page(route='/settings', title='Settings')
 def settings() -> rx.Component:
+
     return rx.container(
         rx.heading("Settings", size='8'),
     )
 
 
 def get_state_label(state):
+
     return rx.cond(
         state == 'open',
         'Open',
-        rx.cond(state == 'in_progress', 'In Progress', rx.cond(state == 'closed', 'Closed', 'Unknown')),
+        rx.cond(
+            state == 'in_progress',
+            'In Progress',
+            rx.cond(
+                state == 'done',
+                'Done',
+                rx.cond(
+                    state == 'canceled',
+                    'Canceled',
+                    'Unknown'
+                )
+            )
+        ),
     )
 
 
 def get_state_color(state):
+
     return rx.cond(
         state == 'open',
         'blue',
-        rx.cond(state == 'in_progress', 'green', rx.cond(state == 'closed', 'gray', 'purple')),
+        rx.cond(
+            state == 'in_progress',
+            'green',
+            rx.cond(
+                state == 'done',
+                'gray',
+                rx.cond(
+                    state == 'canceled',
+                    'gray',
+                    'red'
+                )
+            )
+        ),
     )
 
 
