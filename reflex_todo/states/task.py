@@ -1,4 +1,5 @@
 import reflex as rx
+from sqlalchemy import case
 
 from reflex_todo.models.task import Task
 
@@ -11,7 +12,20 @@ class TasksState(rx.State):
     @rx.event
     def load_tasks(self):
         with rx.session() as session:
-            self.tasks = session.exec(Task.select()).all()
+            order = case(
+                (Task.state == "open", 1),
+                (Task.state == "in_progress", 2),
+                (Task.state == "done", 3),
+                (Task.state == "canceled", 4),
+                else_=99
+            )
+
+            self.tasks = (
+                session.exec(
+                    Task.select()
+                    .order_by(order, Task.text)
+                ).all()
+            )
 
         if not self.tasks:
             with rx.session() as session:
