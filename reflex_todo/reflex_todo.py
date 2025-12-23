@@ -7,7 +7,7 @@ from reflex_todo.states.task import TasksState
 
 @rx.page(route='/add-task', title='Add Task')
 def add() -> rx.Component:
-    # Add task page at /add
+
     return rx.container(
         rx.color_mode.button(position="top-right"),
         rx.vstack(
@@ -101,6 +101,49 @@ def render_task(task):
 
     state_label = get_state_label(state)
     color_name = get_state_color(state)
+    
+    actions = rx.hstack(
+        rx.button(
+            # "▶",
+            '>',
+            size="3",
+            color='gray',
+            _hover={'color': charcoal_hover},
+            variant="ghost",
+            aria_label="put in progress",
+            on_click=lambda x: TasksState.update_task_state(task.id, "in_progress"),
+            title="Put in progress",
+            padding_x='6px',
+            margin_x='2px',
+        ),
+        rx.button(
+            "✓",
+            size="3",
+            color='gray',
+            _hover={'color': charcoal_hover},
+            variant="ghost",
+            aria_label="mark done",
+            on_click=lambda x: TasksState.update_task_state(task.id, "done"),
+            title="Done",
+            padding_x='6px',
+            margin_x='2px',
+        ),
+        rx.button(
+            # "✖",
+            'x',
+            size="3",
+            color='gray',
+            _hover={'color': charcoal_hover},
+            variant="ghost",
+            aria_label="cancel task",
+            on_click=lambda x: TasksState.update_task_state(task.id, "canceled"),
+            title="Cancel",
+            padding_x='6px',
+            margin_x='2px',
+        ),
+        spacing="1",
+        align="center",
+    )
 
     return rx.box(
         rx.hstack(
@@ -112,6 +155,7 @@ def render_task(task):
                 color='gray.800',
                 margin='10px',
             ),
+            actions,
             rx.badge(
                 state_label,
                 color_scheme=color_name,

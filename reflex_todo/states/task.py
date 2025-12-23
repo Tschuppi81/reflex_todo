@@ -21,6 +21,10 @@ class TasksState(rx.State):
             ]
 
     @rx.event
+    def set_new_task(self, value: str):
+        self.new_task = value
+
+    @rx.event
     def add_task(self):
         if not self.new_task.strip():
             self.error = 'Task cannot be empty'
@@ -36,16 +40,16 @@ class TasksState(rx.State):
 
         return rx.redirect('/')
 
-    # @rx.event
-    # def update_task_state(self, task_id: int, new_state: str):
-    #     with rx.session() as session:
-    #         task = session.get(Task, task_id)
-    #         if task:
-    #             task.state = new_state
-    #             session.add(task)
-    #             session.commit()
-    #
-    #             self.load_tasks()
+    @rx.event
+    def update_task_state(self, task_id: int, new_state: str):
+        with rx.session() as session:
+            task = session.get(Task, task_id)
+            if task:
+                task.state = new_state
+                session.add(task)
+                session.commit()
+
+                self.load_tasks()
 
     # @rx.event
     # def delete_task(self, task_id: int):
