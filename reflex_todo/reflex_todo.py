@@ -153,6 +153,7 @@ def tasks() -> rx.Component:
             spacing='3',
             justify='center',
         ),
+        on_mount=TasksState.load_tasks,
     )
 
 

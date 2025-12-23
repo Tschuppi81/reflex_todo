@@ -4,7 +4,7 @@ from reflex_todo.models.task import Task
 
 
 class TasksState(rx.State):
-    tasks: list[Task] = ['Buy Milk', 'Walk the Dog', 'Write Code']
+    tasks: list[Task] = []
     new_task: str = ''
     error: str = ''
 
@@ -12,6 +12,13 @@ class TasksState(rx.State):
     def load_tasks(self):
         with rx.session() as session:
             self.tasks = session.exec(Task.select()).all()
+
+        if not self.tasks:
+            self.tasks = [
+                Task(text='Walk the dog', state='open'),
+                Task(text='Write Code', state='in_progress'),
+                Task(text='Get up!', state='closed'),
+            ]
 
     @rx.event
     def add_task(self):
