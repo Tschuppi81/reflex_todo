@@ -14,11 +14,14 @@ class TasksState(rx.State):
             self.tasks = session.exec(Task.select()).all()
 
         if not self.tasks:
-            self.tasks = [
-                Task(text='Walk the dog', state='open'),
-                Task(text='Write Code', state='in_progress'),
-                Task(text='Get up!', state='closed'),
-            ]
+            with rx.session() as session:
+                for task in [
+                    Task(text='Walk the dog', state='open'),
+                    Task(text='Write Code', state='in_progress'),
+                    Task(text='Get up!', state='closed'),
+                ]:
+                    session.add(task)
+                    session.commit()
 
     @rx.event
     def set_new_task(self, value: str):
