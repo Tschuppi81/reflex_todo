@@ -52,38 +52,45 @@ def settings() -> rx.Component:
     )
 
 
-def render_task(task):
-    # safely get text and state from object, dict or plain string
-    text = getattr(task, "text", None)
-    if text is None:
-        if isinstance(task, dict):
-            text = task.get("text", str(task))
-        else:
-            text = str(task)
-    state = getattr(task, "state", None)
-    if state is None and isinstance(task, dict):
-        state = task.get("state", "open")
+def get_state_label(state):
+    return rx.cond(
+        state == 'open',
+        'Open',
+        rx.cond(state == 'in_progress', 'In Progress', rx.cond(state == 'closed', 'Closed', 'Unknown')),
+    )
 
-    color = rx.cond(state == 'open', 'green', 'gray')  # blue for todo, green for in progress, gray for closed
-    badge_label = state
+
+def get_state_color(state):
+    return rx.cond(
+        state == 'open',
+        'blue',
+        rx.cond(state == 'in_progress', 'green', rx.cond(state == 'closed', 'gray', 'purple')),
+    )
+
+
+def render_task(task):
+    task_label = task.text
+    state = task.state
+
+    state_label = get_state_label(state)
+    color_name = get_state_color(state)
 
     return rx.box(
         rx.hstack(
             rx.text(
-                text,
+                task_label,
                 size='5',
                 font_weight='semibold',
                 no_of_lines=2,
                 color='gray.800',
-                padding_left='10px',
-                padding_top='10px',
+                margin='10px',
             ),
             rx.badge(
-                badge_label,
-                color_scheme=color,
+                state_label,
+                color_scheme=color_name,
                 variant='soft',
                 border_radius='full',
-                padding_x='2',
+                margin_right='5px',
                 font_size='xs',
             ),
             justify='between',
