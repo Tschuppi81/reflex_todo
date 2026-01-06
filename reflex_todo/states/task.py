@@ -68,15 +68,15 @@ class TasksState(rx.State):
 
                 self.load_tasks()
 
-    # @rx.event
-    # def delete_task(self, task_id: int):
-    #     with rx.session() as session:
-    #         task = session.get(Task, task_id)
-    #         if task:
-    #             session.delete(task)
-    #             session.commit()
-    #
-    #             self.load_tasks()
+    @rx.event
+    def delete_task(self, task_id: int):
+        with rx.session() as session:
+            task = session.get(Task, task_id)
+            if task:
+                session.delete(task)
+                session.commit()
+
+                self.load_tasks()
 
     @rx.event
     def reset_form(self):
