@@ -22,6 +22,7 @@ def add() -> rx.Component:
                 value=TasksState.new_task,
                 on_change=TasksState.set_new_task,
                 width='100%',
+                auto_focus=True,
             ),
             rx.cond(
                 TasksState.error,
