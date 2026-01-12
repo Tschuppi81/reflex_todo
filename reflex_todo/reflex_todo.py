@@ -110,8 +110,9 @@ def render_task(task):
     
     actions = rx.hstack(
         rx.button(
-            # "▶",
-            '>',
+            rx.hstack(
+                rx.icon(tag="arrow-right-from-line", size=18, stroke_width=2),
+            ),
             size="3",
             color='gray',
             _hover={'color': charcoal_hover},
@@ -123,7 +124,9 @@ def render_task(task):
             margin_x='2px',
         ),
         rx.button(
-            "✓",
+            rx.hstack(
+                rx.icon(tag="check-line", size=18, stroke_width=2),
+            ),
             size="3",
             color='gray',
             _hover={'color': charcoal_hover},
@@ -135,14 +138,16 @@ def render_task(task):
             margin_x='2px',
         ),
         rx.button(
-            'x',
+            rx.hstack(
+                rx.icon(tag="trash", size=18, stroke_width=2),
+            ),
             size="3",
             color='gray',
             _hover={'color': charcoal_hover},
             variant="ghost",
-            aria_label="cancel task",
+            aria_label="delete",
             on_click=lambda x: TasksState.delete_task(task.id),
-            title="Cancel",
+            title="Delete",
             padding_x='6px',
             margin_x='2px',
         ),
